@@ -200,7 +200,7 @@ if __name__ == "__main__":
             num_simulations=SIM_COUNT_TOTAL, 
             visualize_run_idx=VISUALIZE_RUN_AT_INDEX,
             selected_ids_for_simulation=chosen_player_ids,
-            start_method_for_batch=chosen_start_method,             # <--- 传递起点模式
+            start_method_for_batch=chosen_start_method,             
             ranks_for_batch_ranked_start=fixed_ranks_for_batch    # <--- 传递排名数据
         )
     else:

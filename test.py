@@ -86,7 +86,6 @@ current_start_method = "normal"
 # 添加到 current_round_player_actions_log 的信息都已经是中文。
 
 def initialize_game_state_logic_only(selected_player_ids, start_method="normal", first_race_ranks_data=None):
-    # (与上一版我提供的 test.py 中此函数的中文日志版本一致)
     global track, players, game_over, winners_podium, current_round, current_round_player_actions_log
     global all_round_states, current_display_round_index, SELECTED_PLAYERS_THIS_GAME
     global pre_track_stacks_map, current_start_method
@@ -137,7 +136,6 @@ def initialize_game_state_logic_only(selected_player_ids, start_method="normal",
 
 
 def get_player_stack_info(player_obj_to_find, current_track_state, current_pre_track_map):
-    # (与上一版我提供的 test.py 中此函数的逻辑一致)
     if player_obj_to_find.position < 0:
         stack_in_pre_cell = current_pre_track_map.get(player_obj_to_find.position)
         if stack_in_pre_cell:
@@ -157,7 +155,6 @@ def get_player_stack_info(player_obj_to_find, current_track_state, current_pre_t
 
 
 def check_is_player_last(player_to_check, current_game_players_list, current_track_state_to_check, current_pre_track_map_to_check):
-    # (与上一版我提供的 test.py 中此函数的逻辑一致)
     if player_to_check.has_finished: return False
     min_pos_val = TRACK_LENGTH 
     active_player_positions = []
@@ -168,7 +165,6 @@ def check_is_player_last(player_to_check, current_game_players_list, current_tra
     return player_to_check.position == min_pos_val
 
 def execute_move_logic(current_player_obj, num_steps, move_description_prefix=""):
-    # (与上一版我提供的 test.py 中此函数的中文日志版本一致)
     global game_over, winners_podium, track, current_round_player_actions_log, pre_track_stacks_map
     player_log_name_val = PLAYER_DETAILS[current_player_obj.id]["log_name"]
     action_log_start_str = f"{move_description_prefix}{player_log_name_val}({current_player_obj.id})"
@@ -225,7 +221,6 @@ def execute_move_logic(current_player_obj, num_steps, move_description_prefix=""
         return False
 
 def process_single_player_turn(player_obj, is_first, is_last):
-    # (与上一版我提供的 test.py 中此函数的中文日志版本一致，并调用了更新后的 get_player_stack_info 和 check_is_player_last)
     global game_over, current_round_player_actions_log, track, SELECTED_PLAYERS_THIS_GAME, pre_track_stacks_map
     if player_obj.has_finished: return
     player_log_name_val = PLAYER_DETAILS[player_obj.id]["log_name"]
@@ -283,7 +278,7 @@ def process_single_player_turn(player_obj, is_first, is_last):
     if player_obj.id == 1 and is_last and not player_obj.has_finished: 
         execute_move_logic(player_obj, 2, f"{player_log_name_val}({player_obj.id}) 洛可可末位奖:")
 
-def play_one_full_round(): # (与上一版我提供的 test.py 中此函数的中文日志版本一致)
+def play_one_full_round(): 
     global current_round, game_over, current_round_player_actions_log, track, SELECTED_PLAYERS_THIS_GAME, current_start_method, pre_track_stacks_map
     current_round += 1
     current_round_player_actions_log = [f"--- 回合 {current_round} ({time.strftime('%H:%M:%S')}) (模式: {current_start_method}) ---"]
@@ -308,7 +303,7 @@ def play_one_full_round(): # (与上一版我提供的 test.py 中此函数的�
         if game_over: break
         process_single_player_turn(player_act, i == 0, i == len(round_order) - 1)
 
-def determine_final_ranking(): # (与上一版我提供的 test.py 中此函数的逻辑一致)
+def determine_final_ranking(): 
     current_assigned_rank = 1; final_ranks = []; p_ids_ranked = set()
     for p_win in winners_podium:
         if p_win.id not in p_ids_ranked:
@@ -331,7 +326,6 @@ def draw_matplotlib_board_state(current_ax_obj, current_fig_obj, round_num_to_di
                                 current_track_to_draw, current_pre_track_map_to_draw, 
                                 current_players_list_ref, current_podium_to_draw,
                                 list_of_actions_to_log, is_game_over_now):
-    # (与上一版我提供的 test.py 中此函数的绘图逻辑一致，包含赛前格子和中文日志的绘制)
     global plt, np 
     if not current_ax_obj or not current_fig_obj or not plt or not np: return
     current_ax_obj.clear()
@@ -419,7 +413,6 @@ def _setup_matplotlib_fonts(): # (与上一版我提供的 test.py 中此函数�
 
 
 def run_single_simulation_for_auto_frames(selected_ids_for_game, start_method_param, first_race_ranks_data_param, specific_frames_dir_param, suppress_all_prints_param=False):
-    # (与上一版我提供的 test.py 中此函数的逻辑一致，它调用 initialize_game_state_logic_only 和 initialize_matplotlib_for_mode)
     global game_over, current_round, FIG, AX, plt, np, current_round_player_actions_log, track, SELECTED_PLAYERS_THIS_GAME, winners_podium, pre_track_stacks_map
     initialize_game_state_logic_only(selected_ids_for_game, start_method_param, first_race_ranks_data_param) 
     can_visualize = initialize_matplotlib_for_mode(is_interactive_mode=False) 
@@ -472,7 +465,6 @@ def initialize_matplotlib_for_mode(is_interactive_mode): # <--- 修改参数名�
         return False
 
 def pre_calculate_all_round_states_for_interactive_view(selected_ids_for_game, start_method_param, first_race_ranks_data_param):
-    # (与上一版我提供的 test.py 中此函数的逻辑一致, 确保深拷贝了 pre_track_stacks_map)
     global all_round_states, game_over, current_round, current_round_player_actions_log, track, SELECTED_PLAYERS_THIS_GAME, winners_podium, pre_track_stacks_map
     initialize_game_state_logic_only(selected_ids_for_game, start_method_param, first_race_ranks_data_param)
     all_round_states = []
@@ -522,7 +514,7 @@ def on_key_press_interactive(event): # (与上一版我提供的 test.py 中此�
                                 s['winners_podium'], s['player_actions_log'], s['is_game_over_at_this_point'])
 
 def run_interactive_visualization(selected_ids_for_game, start_method_param, first_race_ranks_data_param):
-    # (与上一版我提供的 test.py 中此函数的逻辑一致)
+
     global FIG, AX, plt, np, current_display_round_index, font_manager 
     if not pre_calculate_all_round_states_for_interactive_view(selected_ids_for_game, start_method_param, first_race_ranks_data_param):
         print("未能预计算回合状态。"); return
@@ -540,7 +532,6 @@ def run_interactive_visualization(selected_ids_for_game, start_method_param, fir
     FIG, AX, plt, np, font_manager = None, None, None, None, None
 
 def run_simulation_logic_only(selected_ids_for_game, start_method_param="normal", first_race_ranks_data_param=None, suppress_all_prints=True):
-    # (与上一版我提供的 test.py 中此函数的逻辑一致, 已更新接受新参数)
     global game_over, current_round 
     initialize_game_state_logic_only(selected_ids_for_game, start_method_param, first_race_ranks_data_param) 
     max_sim_rounds = 200 
@@ -551,7 +542,7 @@ def run_simulation_logic_only(selected_ids_for_game, start_method_param="normal"
     return determine_final_ranking()
 
 # --- 命令行交互函数 (中文提示) ---
-def select_characters_cli(): # (与上一版我提供的 test.py 中此函数的中文版本一致)
+def select_characters_cli(): 
     print("\n--- 角色选择 ---"); print("可用角色:")
     for char_id, details in PLAYER_DETAILS.items(): print(f"  ID: {char_id} - {details['name']}")
     selected_ids = []; num_to_select = DEFAULT_NUM_SELECTED_PLAYERS
@@ -566,7 +557,7 @@ def select_characters_cli(): # (与上一版我提供的 test.py 中此函数的
         except ValueError: print("无效输入，请输入数字ID。")
     print("\n你选择的参赛角色ID为:", selected_ids); return selected_ids
 
-def select_start_method_cli(): # (与上一版我提供的 test.py 中此函数的中文版本一致)
+def select_start_method_cli(): 
     print("\n--- 请选择起点方式 ---")
     print("1. 标准起点 (所有选定玩家从0号格开始)")
     print("2. 排名起点 (根据虚拟“上一局”随机排名决定分散起点)")
